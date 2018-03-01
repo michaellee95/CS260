@@ -13,7 +13,7 @@ checkingToSaving()
 	echo "transaction not completed"
 	echo "your checking balance is: $" $checkings
     else
-	savings=$(echo "$amt + $savings" | bc )
+	savings=$(echo "$amt + $savings" )
 	checkings=$(echo "$checkings - $amt" | bc )
 	echo "new checking balance: $" $checkings
 	echo "new saving balance: $" $savings

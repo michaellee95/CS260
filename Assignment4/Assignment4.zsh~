@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 savings=1000.00
 checkings=1000.00
 
@@ -8,7 +8,7 @@ checkingToSaving()
     echo "please enter the amount to transfer"
     read amt
     
-    if (( $(bc <<< "$amt > $checkings") || $(bc <<< "$amt < 0") ))
+    if (( $amt > $checkings || $amt < 0 ))
     then
 	echo "transaction not completed"
 	echo "your checking balance is: $" $checkings
@@ -26,7 +26,7 @@ savingToChecking()
     echo "please enter the amount to transfer"
     read amt
 
-    if (( $(bc <<< "$amt > $savings") || $(bc <<< "$amt < 0") ))
+    if (( $amt > $savings ||  $amt < 0 ))
     then
         echo "transaction not completed"
         echo "your savings balance is: $" $savings
@@ -49,11 +49,11 @@ withdraw()
 	    "1")
 		echo "amount to withdraw"
 		read amt
-		if (( $(bc <<< "$amt > $savings") ||  $(bc <<< "$amt < 0") ))
+		if (( $amt > $savings ||  $amt < 0 ))
 		then
 		    echo "Error. Current saving balance is: $" $savings
 		else
-		    savings=$( echo "$savings - $amt" | bc )
+		    savings=$( echo "$savings - $amt" | bc -l )
 		    echo "Remaining balance: $" $savings
 		fi
 		break;;
@@ -61,11 +61,11 @@ withdraw()
 		echo "amount to withdraw"
 		read amt
 		
-                if (( $(bc <<< "$amt > $checkings") ||  $(bc <<< "$amt < 0") ))
+                if (( $amt > $checkings ||  $amt < 0 ))
                 then
                     echo "Error. Current checking balance is: $" $checkings
                 else
-                    checkings=$( echo "$checkings - $amt" | bc )
+                    checkings=$( echo "$checkings - $amt" | bc -l )
 		    echo "Remaining balance: $" $checkings
 		fi
 		break;;
@@ -116,13 +116,13 @@ menu()
 }
 
 #Get pin. Exit if too many wrong inputs
-while [[ 1 ]]
+while ( 1 )
 do
     echo "*** Welcome to Cal Poly's ATM ****"
     echo "Please enter your PIN:"
     read pin
 
-    if (( $pin == "111" ))
+    if [[ "$pin" = "111" ]]
     then
 	menu
 	break
@@ -132,7 +132,7 @@ do
 	`sleep 1`
     fi
 	
-    if [[ $try -eq 3 ]]
+    if [[ "$try" = "3" ]]
     then
 	echo "Too many illegal PINs. Try later again."
 	exit 
